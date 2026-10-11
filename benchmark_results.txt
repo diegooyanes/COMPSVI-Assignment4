@@ -1,0 +1,90 @@
+SORTING ASSIGNMENT - STARTER CODE
+Implement the sorting functions above, then run tests.
+
+======================================================================
+TESTING SORTING CORRECTNESS
+======================================================================
+
+Test: small_random
+  Input:    [64, 34, 25, 12, 22, 11, 90]
+  Expected: [11, 12, 22, 25, 34, 64, 90]
+
+    Bubble Sort         : [11, 12, 22, 25, 34, 64, 90] ✓ PASS
+    Selection Sort      : [11, 12, 22, 25, 34, 64, 90] ✓ PASS
+    Insertion Sort      : [11, 12, 22, 25, 34, 64, 90] ✓ PASS
+    Merge Sort          : [11, 12, 22, 25, 34, 64, 90] ✓ PASS
+
+Test: small_sorted
+  Input:    [1, 2, 3, 4, 5, 6, 7]
+  Expected: [1, 2, 3, 4, 5, 6, 7]
+
+    Bubble Sort         : [1, 2, 3, 4, 5, 6, 7] ✓ PASS
+    Selection Sort      : [1, 2, 3, 4, 5, 6, 7] ✓ PASS
+    Insertion Sort      : [1, 2, 3, 4, 5, 6, 7] ✓ PASS
+    Merge Sort          : [1, 2, 3, 4, 5, 6, 7] ✓ PASS
+
+Test: small_reverse
+  Input:    [7, 6, 5, 4, 3, 2, 1]
+  Expected: [1, 2, 3, 4, 5, 6, 7]
+
+    Bubble Sort         : [1, 2, 3, 4, 5, 6, 7] ✓ PASS
+    Selection Sort      : [1, 2, 3, 4, 5, 6, 7] ✓ PASS
+    Insertion Sort      : [1, 2, 3, 4, 5, 6, 7] ✓ PASS
+    Merge Sort          : [1, 2, 3, 4, 5, 6, 7] ✓ PASS
+
+Test: small_duplicates
+  Input:    [5, 2, 8, 2, 9, 1, 5, 8]
+  Expected: [1, 2, 2, 5, 5, 8, 8, 9]
+
+    Bubble Sort         : [1, 2, 2, 5, 5, 8, 8, 9] ✓ PASS
+    Selection Sort      : [1, 2, 2, 5, 5, 8, 8, 9] ✓ PASS
+    Insertion Sort      : [1, 2, 2, 5, 5, 8, 8, 9] ✓ PASS
+    Merge Sort          : [1, 2, 2, 5, 5, 8, 8, 9] ✓ PASS
+
+======================================================================
+STABILITY ANALYSIS
+======================================================================
+
+Testing which algorithms preserve order of equal elements...
+
+  bubble_sort         : ['Gadget B', 'Tool D', 'Widget A', 'Widget C', 'Widget E']
+  selection_sort      : ['Gadget B', 'Tool D', 'Widget C', 'Widget A', 'Widget E']
+  insertion_sort      : ['Gadget B', 'Tool D', 'Widget A', 'Widget C', 'Widget E']
+  merge_sort          : ['Gadget B', 'Tool D', 'Widget A', 'Widget C', 'Widget E']
+  bubble_sort         : Stable
+  selection_sort      : Unstable
+  insertion_sort      : Stable
+  merge_sort          : Stable
+
+
+======================================================================
+BENCHMARKING SORTING ALGORITHMS
+======================================================================
+
+Dataset: Order Processing Queue (5,000 element sample)
+----------------------------------------------------------------------
+  Bubble Sort         :    18.42 ms |    39.27 KB
+  Selection Sort      : 10111.17 ms |    39.32 KB
+  Insertion Sort      :    11.34 ms |    39.20 KB
+  Merge Sort          :    72.36 ms |   157.83 KB
+
+Dataset: Product Catalog (5,000 element sample)
+----------------------------------------------------------------------
+  Bubble Sort         : 26235.31 ms |    39.27 KB
+  Selection Sort      : 10973.59 ms |    39.32 KB
+  Insertion Sort      : 11093.80 ms |    39.20 KB
+  Merge Sort          :   262.02 ms |   159.19 KB
+
+Dataset: Inventory Reconciliation (5,000 element sample)
+----------------------------------------------------------------------
+  Bubble Sort         : 32544.39 ms |    39.27 KB
+  Selection Sort      : 13201.80 ms |    39.32 KB
+  Insertion Sort      : 11685.92 ms |    39.20 KB
+  Merge Sort          :   134.61 ms |   159.19 KB
+
+Dataset: Customer Activity Log (5,000 element sample)
+----------------------------------------------------------------------
+  Bubble Sort         : 21596.05 ms |    39.27 KB
+  Selection Sort      : 12129.62 ms |    39.32 KB
+  Insertion Sort      :   898.90 ms |    39.20 KB
+  Merge Sort          :    63.07 ms |   156.62 KB

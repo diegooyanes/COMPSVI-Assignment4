@@ -13,6 +13,12 @@ import tracemalloc
 # PART 1: SORTING IMPLEMENTATIONS
 # ============================================================================
 
+def sort_value(item):
+    if isinstance(item, dict):
+        return item["price"]
+    return item
+
+
 def bubble_sort(arr):
     """
     Sort array using bubble sort algorithm.
@@ -29,11 +35,16 @@ def bubble_sort(arr):
     Example:
         bubble_sort([64, 34, 25, 12, 22, 11, 90]) returns [11, 12, 22, 25, 34, 64, 90]
     """
-    # TODO: Implement bubble sort
-    # Hint: Use nested loops - outer loop for passes, inner loop for comparisons
-    # Hint: Compare adjacent elements and swap if left > right
-    
-    pass  # Delete this and write your code
+    result = arr.copy()
+    for end in range(len(result) - 1, 0, -1):
+        swapped = False
+        for i in range(end):
+            if sort_value(result[i]) > sort_value(result[i + 1]):
+                result[i], result[i + 1] = result[i + 1], result[i]
+                swapped = True
+        if not swapped:
+            break
+    return result
 
 
 def selection_sort(arr):
@@ -52,10 +63,15 @@ def selection_sort(arr):
     Example:
         selection_sort([64, 34, 25, 12, 22, 11, 90]) returns [11, 12, 22, 25, 34, 64, 90]
     """
-    # TODO: Implement selection sort
-    # Hint: Find minimum element in unsorted portion, swap it with first unsorted element
-    
-    pass  # Delete this and write your code
+    result = arr.copy()
+    for start in range(len(result) - 1):
+        minimum = start
+        for i in range(start + 1, len(result)):
+            if sort_value(result[i]) < sort_value(result[minimum]):
+                minimum = i
+        if minimum != start:
+            result[start], result[minimum] = result[minimum], result[start]
+    return result
 
 
 def insertion_sort(arr):
@@ -74,10 +90,15 @@ def insertion_sort(arr):
     Example:
         insertion_sort([64, 34, 25, 12, 22, 11, 90]) returns [11, 12, 22, 25, 34, 64, 90]
     """
-    # TODO: Implement insertion sort
-    # Hint: Start from second element, insert it into correct position in sorted portion
-    
-    pass  # Delete this and write your code
+    result = arr.copy()
+    for i in range(1, len(result)):
+        current = result[i]
+        j = i - 1
+        while j >= 0 and sort_value(result[j]) > sort_value(current):
+            result[j + 1] = result[j]
+            j -= 1
+        result[j + 1] = current
+    return result
 
 
 def merge_sort(arr):
@@ -96,12 +117,28 @@ def merge_sort(arr):
     Example:
         merge_sort([64, 34, 25, 12, 22, 11, 90]) returns [11, 12, 22, 25, 34, 64, 90]
     """
-    # TODO: Implement merge sort
-    # Hint: Base case - if array has 1 or 0 elements, it's already sorted
-    # Hint: Recursive case - split array in half, sort each half, merge sorted halves
-    # Hint: You'll need a helper function to merge two sorted arrays
-    
-    pass  # Delete this and write your code
+    result = arr.copy()
+    if len(result) <= 1:
+        return result
+
+    middle = len(result) // 2
+    left = merge_sort(result[:middle])
+    right = merge_sort(result[middle:])
+    merged = []
+    left_i = right_i = 0
+
+    while left_i < len(left) and right_i < len(right):
+        # Taking the left item first on a tie keeps equal items in order.
+        if sort_value(left[left_i]) <= sort_value(right[right_i]):
+            merged.append(left[left_i])
+            left_i += 1
+        else:
+            merged.append(right[right_i])
+            right_i += 1
+
+    merged.extend(left[left_i:])
+    merged.extend(right[right_i:])
+    return merged
 
 
 # ============================================================================
@@ -127,21 +164,25 @@ def demonstrate_stability():
         {"name": "Widget E", "price": 1999, "original_position": 4},
     ]
     
-    # TODO: Sort products by price using each algorithm
-    # Hint: You'll need to modify your sorting functions to work with dictionaries
-    # Hint: Or extract prices, sort them, and check if stable algorithms maintain original order
-    # Hint: For stable sort: items with price 999 should stay in order (B before D)
-    # Hint: For stable sort: items with price 1999 should stay in order (A before C before E)
-    
-    results = {
-        "bubble_sort": "Not tested",
-        "selection_sort": "Not tested", 
-        "insertion_sort": "Not tested",
-        "merge_sort": "Not tested"
+    algorithms = {
+        "bubble_sort": bubble_sort,
+        "selection_sort": selection_sort,
+        "insertion_sort": insertion_sort,
+        "merge_sort": merge_sort,
     }
-    
-    # TODO: Test each algorithm and update results dictionary with "Stable" or "Unstable"
-    
+    results = {}
+    for name, sort_function in algorithms.items():
+        sorted_products = sort_function(products)
+        original_order_by_price = {}
+        sorted_order_by_price = {}
+        for product in products:
+            original_order_by_price.setdefault(product["price"], []).append(product["name"])
+        for product in sorted_products:
+            sorted_order_by_price.setdefault(product["price"], []).append(product["name"])
+        results[name] = (
+            "Stable" if sorted_order_by_price == original_order_by_price else "Unstable"
+        )
+        print(f"  {name:20s}: {[product['name'] for product in sorted_products]}")
     return results
 
 
@@ -208,19 +249,19 @@ def benchmark_algorithm(sort_func, data):
     """
     # Copy data so we don't modify original
     data_copy = data.copy()
-    
+
     # Start memory tracking
     tracemalloc.start()
-    
+
     # Measure execution time
     start_time = time.perf_counter()
     sort_func(data_copy)
     end_time = time.perf_counter()
-    
+
     # Get peak memory usage
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
-    
+
     execution_time_ms = (end_time - start_time) * 1000
     peak_memory_kb = peak / 1024
     
@@ -284,11 +325,7 @@ def analyze_stability():
 if __name__ == "__main__":
     print("SORTING ASSIGNMENT - STARTER CODE")
     print("Implement the sorting functions above, then run tests.\n")
-    
-    # Uncomment these as you complete each part:
-    
-    # test_sorting_correctness()
-    # benchmark_all_datasets()
-    # analyze_stability()
-    
-    print("\n⚠ Uncomment the test functions in the main block to run benchmarks!")
+
+    test_sorting_correctness()
+    analyze_stability()
+    benchmark_all_datasets()

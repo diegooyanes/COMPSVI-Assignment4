@@ -163,6 +163,4 @@ if __name__ == "__main__":
     # test_merge_sort()
 
     # Or run all tests at once:
-    # test_all()
-
-    print("Uncomment the test functions above to verify your implementations!")
+    test_all()
